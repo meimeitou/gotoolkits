@@ -29,13 +29,20 @@ func interfaceCompare(a interface{}, b interface{}) bool {
 
 //for function test
 func main() {
+
+	fmt.Println(reflect.ValueOf(string([]byte("sdg"))).Interface())
 	fmt.Println("for test")
-	out := tools.Map([]string{"SFK", "GOOD"}, funs)
+	out := tools.Map2([]string{"SFK", "GOOD"}, funs)
+	fmt.Println(out)
+
+	in := map[string]string{"1": "FOGNG", "2": "IUNLL"}
+	out = tools.Map2(in, funs)
 	fmt.Println(out)
 
 	out = tools.Reduce([]int{1, 2, 3, 4}, reduce)
 	fmt.Println(out)
-
+	out = tools.Reduce2([]int{1, 2, 3, 4}, reduce)
+	fmt.Println(out)
 	list1 := []string{"1", "3", "2"}
 	list2 := []string{"1", "3", "2"}
 	fmt.Println(reflect.DeepEqual(list1, list2))

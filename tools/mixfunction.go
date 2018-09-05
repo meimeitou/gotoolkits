@@ -6,12 +6,16 @@ import (
 	"reflect"
 )
 
+type FuncReduce = func(interface{}, interface{}) interface{}
+
+type FuncMap = func(interface{}) interface{}
+
 func lambda() {
 
 }
 
 //Map python map 操作，针对in 序列中的值经过function处理
-func Map(in interface{}, f func(interface{}) interface{}) interface{} {
+func Map(in interface{}, f FuncMap) interface{} {
 	var out []interface{}
 	switch in.(type) {
 	case []string:
@@ -34,8 +38,28 @@ func Map(in interface{}, f func(interface{}) interface{}) interface{} {
 	return in
 }
 
+//Map2 is another function use reflect, 实现包括slice array 和map
+func Map2(in interface{}, f FuncMap) interface{} {
+	inType := reflect.TypeOf(in)
+	inValue := reflect.ValueOf(in)
+	if inType.Kind() == reflect.Slice || inType.Kind() == reflect.Array {
+		for i := 0; i < inValue.Len(); i++ {
+			inValue.Index(i).Set(reflect.ValueOf(f(inValue.Index(i).Interface())))
+		}
+		return inValue.Interface()
+	}
+	if inType.Kind() == reflect.Map {
+		for _, key := range inValue.MapKeys() {
+			inValue.SetMapIndex(key, reflect.ValueOf(f(inValue.MapIndex(key).Interface())))
+
+		}
+		return inValue.Interface()
+	}
+	return in
+}
+
 //Reduce  reduce list to one values through function
-func Reduce(in interface{}, option func(interface{}, interface{}) interface{}) interface{} {
+func Reduce(in interface{}, option FuncReduce) interface{} {
 	var out interface{}
 	switch in.(type) {
 	case []string:
@@ -52,6 +76,21 @@ func Reduce(in interface{}, option func(interface{}, interface{}) interface{}) i
 		values, _ := in.([]int)
 		for _, v := range values {
 			out = option(out, v)
+		}
+		return out
+	}
+	return nil
+}
+
+//Reduce2  anather way to solve,  maybe slower
+func Reduce2(in interface{}, option FuncReduce) interface{} {
+	inType := reflect.TypeOf(in)
+	var out interface{}
+	if inType.Kind() == reflect.Slice || inType.Kind() == reflect.Array {
+		inValue := reflect.ValueOf(in)
+		out = inValue.Index(0).Interface()
+		for i := 1; i < inValue.Len(); i++ {
+			out = option(out, inValue.Index(i).Interface())
 		}
 		return out
 	}
