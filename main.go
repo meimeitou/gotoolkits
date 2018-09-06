@@ -29,4 +29,7 @@ func main() {
 	inVale := reflect.TypeOf(val)
 	fmt.Println(inVale, inVale.Kind(), inVale.Elem().Kind())
 	fmt.Println(tools.Examiner(inVale, 0))
+
+	sort.By(nil).InitAndSort(val, func(a, b int) bool { return a > b })
+	fmt.Println(val)
 }

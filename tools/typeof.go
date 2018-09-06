@@ -5,15 +5,12 @@ import (
 	"reflect"
 )
 
-// 类型以及元素的类型判断
+// 类型以及元素的类型判断 function form web
 func Examiner(t reflect.Type, depth int) map[int]map[string]string {
 	outType := make(map[int]map[string]string)
-
-	// 如果是一下类型，重新验证
 	switch t.Kind() {
 	case reflect.Array, reflect.Chan, reflect.Map, reflect.Ptr, reflect.Slice:
-		fmt.Println("这几种类型Name是空字符串：", t.Name(), ", Kind是：", t.Kind())
-		// 递归查询元素类型
+		fmt.Println("类型Name是空字符串：", t.Name(), ", Kind是：", t.Kind())
 		tMap := Examiner(t.Elem(), depth)
 		for k, v := range tMap {
 			outType[k] = v
@@ -28,7 +25,6 @@ func Examiner(t reflect.Type, depth int) map[int]map[string]string {
 			}
 		}
 	default:
-		// 直接验证类型
 		outType = map[int]map[string]string{depth: {"Name": t.Name(), "Kind": t.Kind().String()}}
 	}
 

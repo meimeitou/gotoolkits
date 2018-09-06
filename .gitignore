@@ -2,18 +2,15 @@
 .dockerignore*
 Dockerfile*
 
-deploy.yaml.*
 .env*
 *.bak
 *.log
 *.pid
-*.py[cod]
 *.seed
 *.sw[po]
 
 .*~
 .coverage*
-.DS_Store
 .grunt
 .idea
 .lock-wscript
@@ -28,8 +25,6 @@ coverage-reports
 lib-cov
 logs
 node_modules
-permdir
-permdir_test
 pids
 reports
 test-reports
@@ -54,11 +49,9 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
-.med/
-.kube
 config.json
 *.ini
-kubectl
 kube_*_config*
 vendor
 *.out
+debug
