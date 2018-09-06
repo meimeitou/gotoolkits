@@ -2,52 +2,31 @@ package main
 
 import (
 	"fmt"
+	"gotools/sort"
 	"gotools/tools"
 	"reflect"
-	"strings"
 )
 
-func funs(s interface{}) interface{} {
-	if str, ok := s.(string); ok {
-		return strings.ToLower(str)
-	}
-	return s
+func change(value interface{}) {
+	tmp := reflect.ValueOf(value).Index(0).Interface()
+
+	reflect.ValueOf(value).Index(0).Set(reflect.ValueOf(value).Index(4))
+	reflect.ValueOf(value).Index(4).Set(reflect.ValueOf(tmp))
 }
 
-func reduce(in1 interface{}, in2 interface{}) interface{} {
-	if i1, ok := in1.(int); ok {
-		if i2, ok := in2.(int); ok {
-			return i1 + i2
-		}
-	}
-	return 0
-}
-
-func interfaceCompare(a interface{}, b interface{}) bool {
-	return a == b
-}
-
-//for function test
 func main() {
-
-	fmt.Println(reflect.ValueOf(string([]byte("sdg"))).Interface())
-	fmt.Println("for test")
-	out := tools.Map2([]string{"SFK", "GOOD"}, funs)
-	fmt.Println(out)
-
-	in := map[string]string{"1": "FOGNG", "2": "IUNLL"}
-	out = tools.Map2(in, funs)
-	fmt.Println(out)
-
-	out = tools.Reduce([]int{1, 2, 3, 4}, reduce)
-	fmt.Println(out)
-	out = tools.Reduce2([]int{1, 2, 3, 4}, reduce)
-	fmt.Println(out)
-	list1 := []string{"1", "3", "2"}
-	list2 := []string{"1", "3", "2"}
-	fmt.Println(reflect.DeepEqual(list1, list2))
-
-	fmt.Println(reflect.TypeOf(list1))
-
-	fmt.Println(interfaceCompare(1, "2"))
+	// Closures that order the Planet structure.
+	name := func(p1, p2 interface{}) bool {
+		val1, _ := p1.(int)
+		val2, _ := p2.(int)
+		return val1 < val2
+	}
+	val := []int{5, 4, 9, 4, 2, 4, 2, 4}
+	sort.By(name).Sort(val)
+	fmt.Println("By name:", val)
+	change(val)
+	fmt.Println(val)
+	inVale := reflect.TypeOf(val)
+	fmt.Println(inVale, inVale.Kind(), inVale.Elem().Kind())
+	fmt.Println(tools.Examiner(inVale, 0))
 }

@@ -10,6 +10,8 @@ type FuncReduce = func(interface{}, interface{}) interface{}
 
 type FuncMap = func(interface{}) interface{}
 
+type FuncCheck = func(interface{}) bool
+
 func lambda() {
 
 }
@@ -140,4 +142,9 @@ func SoftEqual(list1 interface{}, list2 interface{}) bool {
 		fmt.Println("only support slice array map")
 	}
 	return false
+}
+
+//序列删除指定值
+func DeleteElement(list interface{}, f FuncCheck) {
+
 }
