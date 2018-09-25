@@ -1,10 +1,12 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"gotools/sort"
 	"gotools/tools"
 	"reflect"
+	"strings"
 )
 
 func change(value interface{}) {
@@ -12,6 +14,33 @@ func change(value interface{}) {
 
 	reflect.ValueOf(value).Index(0).Set(reflect.ValueOf(value).Index(4))
 	reflect.ValueOf(value).Index(4).Set(reflect.ValueOf(tmp))
+}
+
+var (
+	str = `
+	[
+   {
+      "domain":"sf",
+      "path":"pa"
+   }
+  ]`
+)
+
+type do struct {
+	Domain string `json:"domain"`
+	Path   string `json:"path"`
+}
+
+func deleteDeploymentName(inStr, deleteStr string) string {
+	usingDeploy := strings.Split(inStr, ",")
+	var out []string
+	fmt.Println(usingDeploy)
+	for i := range usingDeploy {
+		if usingDeploy[i] != deleteStr && usingDeploy[i] != "" {
+			out = append(out, usingDeploy[i])
+		}
+	}
+	return strings.Join(out, ",")
 }
 
 func main() {
@@ -32,4 +61,18 @@ func main() {
 
 	sort.By(nil).InitAndSort(val, func(a, b int) bool { return a > b })
 	fmt.Println(val)
+	var va []do
+	err := json.Unmarshal([]byte(str), &va)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(va)
+	tp := &[]int32{2, 3, 4}
+	fmt.Println(reflect.TypeOf(*tp))
+	fmt.Println(deleteDeploymentName("", "gf"))
+
+	mmp := map[string]string{}
+	mmp["1"] = "1"
+	delete(mmp, "1")
+	fmt.Println(mmp)
 }
