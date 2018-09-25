@@ -70,9 +70,4 @@ func main() {
 	tp := &[]int32{2, 3, 4}
 	fmt.Println(reflect.TypeOf(*tp))
 	fmt.Println(deleteDeploymentName("", "gf"))
-
-	mmp := map[string]string{}
-	mmp["1"] = "1"
-	delete(mmp, "1")
-	fmt.Println(mmp)
 }

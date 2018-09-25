@@ -23,6 +23,15 @@ func reduce(in1 interface{}, in2 interface{}) interface{} {
 	}
 	return 0
 }
+
+func add(a, b int) int {
+	return a + b
+}
+
+func add2(a, b float32) float32 {
+	return a + b
+}
+
 func TestMap(t *testing.T) {
 	t.Log(reflect.ValueOf(string([]byte("sdg"))).Interface())
 
@@ -31,4 +40,7 @@ func TestMap(t *testing.T) {
 	in := map[string]string{"1": "FOGNG", "2": "IUNLL"}
 	out = Map2(in, funs)
 	assert.Equal(t, map[string]string{"1": "fogng", "2": "iunll"}, out)
+
+	out = Reduce3([]float32{1, 2, 3, 4}, add2)
+	assert.Equal(t, float32(10), out.(reflect.Value).Interface())
 }

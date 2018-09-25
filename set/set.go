@@ -43,7 +43,7 @@ func (s *Set) HasValue(key interface{}) bool {
 }
 
 //ToList convert to slice
-func (s *Set) ToList() interface{} {
+func (s *Set) ToList() []interface{} {
 	s.RLock()
 	defer s.RUnlock()
 	var list []interface{}

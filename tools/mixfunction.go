@@ -99,6 +99,23 @@ func Reduce2(in interface{}, option FuncReduce) interface{} {
 	return nil
 }
 
+//使用函数反射 性能较低
+func Reduce3(in interface{}, option interface{}) interface{} {
+	inType := reflect.TypeOf(in)
+	opt := reflect.ValueOf(option)
+	var out reflect.Value
+	if inType.Kind() == reflect.Slice || inType.Kind() == reflect.Array {
+		inValue := reflect.ValueOf(in)
+		out = inValue.Index(0)
+		for i := 1; i < inValue.Len(); i++ {
+			paramList := []reflect.Value{out, inValue.Index(i)}
+			out = opt.Call(paramList)[0]
+		}
+		return out
+	}
+	return out
+}
+
 //Contain suport slice map    source 是否包含target目标
 func Contain(source interface{}, target interface{}) (bool, error) {
 	targetValue := reflect.ValueOf(source)
@@ -117,7 +134,7 @@ func Contain(source interface{}, target interface{}) (bool, error) {
 	return false, errors.New("not in array")
 }
 
-//SoftEqual reflect.DeepEqual 针对有序的序列会执行顺序判断 我们希望其不执行顺序判断，仅判断序列的内容
+//SoftEqual reflect.DeepEqual 判断序列是否相同 针对有序的序列会执行顺序判断 我们希望其不执行顺序判断，仅判断序列的内容
 func SoftEqual(list1 interface{}, list2 interface{}) bool {
 	if reflect.TypeOf(list1) != reflect.TypeOf(list2) {
 		return false
