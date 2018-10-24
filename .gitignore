@@ -30,6 +30,7 @@ reports
 test-reports
 tmpdir
 venv
+sendcall
 
 build/Release
 

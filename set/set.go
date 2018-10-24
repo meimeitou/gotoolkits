@@ -43,7 +43,7 @@ func (s *Set) HasValue(key interface{}) bool {
 }
 
 //ToList convert to slice
-func (s *Set) ToList() interface{} {
+func (s *Set) ToList() []interface{} {
 	s.RLock()
 	defer s.RUnlock()
 	var list []interface{}
@@ -59,6 +59,8 @@ func (s *Set) Len() int {
 	defer s.RUnlock()
 	return len(s.set)
 }
+
+//    --- 我是分割线 ---
 
 // 使用sync map实现
 type SyncSet struct {

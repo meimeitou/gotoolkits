@@ -1,22 +1,18 @@
-package heap
+package mheap
 
 import "container/heap"
 
-//c/ An Item is something we manage in a priority queue.
 type Item struct {
 	value    string // The value of the item; arbitrary.
 	priority int    // The priority of the item in the queue.
-	// The index is needed by update and is maintained by the heap.Interface methods.
-	index int // The index of the item in the heap.
+	index    int    // The index of the item in the heap.
 }
 
-// A PriorityQueue implements heap.Interface and holds Items.
 type PriorityQueue []*Item
 
 func (pq PriorityQueue) Len() int { return len(pq) }
 
 func (pq PriorityQueue) Less(i, j int) bool {
-	// We want Pop to give us the highest, not lowest, priority so we use greater than here.
 	return pq[i].priority > pq[j].priority
 }
 
