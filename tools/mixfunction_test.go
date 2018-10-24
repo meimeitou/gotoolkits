@@ -29,7 +29,7 @@ func add(a, b int) int {
 }
 
 func add2(a, b float32) float32 {
-	return a + b
+	return a * b
 }
 
 func TestMap(t *testing.T) {
@@ -42,5 +42,5 @@ func TestMap(t *testing.T) {
 	assert.Equal(t, map[string]string{"1": "fogng", "2": "iunll"}, out)
 
 	out = Reduce3([]float32{1, 2, 3, 4}, add2)
-	assert.Equal(t, float32(10), out.(reflect.Value).Interface())
+	assert.Equal(t, float32(24), out)
 }

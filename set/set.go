@@ -60,6 +60,8 @@ func (s *Set) Len() int {
 	return len(s.set)
 }
 
+//    --- 我是分割线 ---
+
 // 使用sync map实现
 type SyncSet struct {
 	set sync.Map

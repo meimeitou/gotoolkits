@@ -101,9 +101,13 @@ func Reduce2(in interface{}, option FuncReduce) interface{} {
 
 //使用函数反射 性能较低
 func Reduce3(in interface{}, option interface{}) interface{} {
+	typeOpt := reflect.TypeOf(option)
 	inType := reflect.TypeOf(in)
 	opt := reflect.ValueOf(option)
 	var out reflect.Value
+	if typeOpt.NumIn() != 2 || typeOpt.NumOut() != 1 {
+		return out.Interface()
+	}
 	if inType.Kind() == reflect.Slice || inType.Kind() == reflect.Array {
 		inValue := reflect.ValueOf(in)
 		out = inValue.Index(0)
@@ -111,9 +115,9 @@ func Reduce3(in interface{}, option interface{}) interface{} {
 			paramList := []reflect.Value{out, inValue.Index(i)}
 			out = opt.Call(paramList)[0]
 		}
-		return out
+		return out.Interface()
 	}
-	return out
+	return out.Interface()
 }
 
 //Contain suport slice map    source 是否包含target目标
